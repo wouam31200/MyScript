@@ -1,6 +1,3 @@
-#!/bin/bash
-
-postfix()
 {
 
 printf "\033c"
