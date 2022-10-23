@@ -1,8 +1,22 @@
 #General Congifuration
-TEMP_USER_ANSWER="no"
-LIELLO_SOURCE_DIR=/opt/liello
-HOST_DOMAIN_NAME="host.domain.tld"
-os_codename=$(lsb_release -cs)
+#TEMP_USER_ANSWER="no"
+#LIELLO_SOURCE_DIR=/opt/liello
+#HOST_DOMAIN_NAME="host.domain.tld"
+#os_codename=$(lsb_release -cs)
+
+get_linux_distribution()
+{
+
+
+        if [ $os_codename != 'buster' ] && [ $os_codename != 'bullseye' ]; then
+
+                echo -e 'Sorry, but this script is only for Debian 10, and Debian 11.'
+				exit 1
+
+        fi
+
+} # endget_linux_distribution
+
 
 install_postfix ()
 
