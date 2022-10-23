@@ -1,3 +1,9 @@
+#General Congifuration
+TEMP_USER_ANSWER="no"
+#ASTPP_SOURCE_DIR=/opt/ASTPP
+HOST_DOMAIN_NAME="host.domain.tld"
+os_codename=$(lsb_release -cs)
+
 install_postfix ()
 
 {
