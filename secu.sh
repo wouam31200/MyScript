@@ -1,6 +1,6 @@
 #General Congifuration
 TEMP_USER_ANSWER="no"
-#ASTPP_SOURCE_DIR=/opt/ASTPP
+#LIELLO_SOURCE_DIR=/opt/liello
 HOST_DOMAIN_NAME="host.domain.tld"
 os_codename=$(lsb_release -cs)
 
@@ -54,6 +54,49 @@ read -n 1 -p "Do you wish to continue with installation of Postfix? (y/n/q[uit])
 
 } #end of install_postfix
 
+
+install_fail2ban()
+{
+                read -n 1 -p "Do you want to install and configure Fail2ban ? (y/n) "
+                if [ "$REPLY"   = "y" ]; then
+
+                            sleep 2s
+                            apt update -y
+                            sleep 2s
+                            apt install fail2ban -y
+                            sleep 2s
+                            echo ""
+                            read -p "Enter fail2ban client's Notification email address: ${NOTIEMAIL}"
+                            NOTIEMAIL=${REPLY}
+                            echo ""
+                            read -p "Enter sender email address: ${NOTISENDEREMAIL}"
+                            NOTISENDEREMAIL=${REPLY}
+                            cd /usr/src
+                            #wget --no-check-certificate --max-redirect=0 https://latest.astppbilling.org/fail2ban_Deb.tar.gz
+                            #tar xzvf fail2ban_Deb.tar.gz
+                            mv /etc/fail2ban /tmp/
+                            cd ${LIELLO_SOURCE_DIR}/misc/
+                            tar -xzvf fail2ban_deb10.tar.gz
+                            cp -rf ${LIELLO_SOURCE_DIR}/misc/fail2ban_deb10 /etc/fail2ban
+                            #cp -rf /usr/src/fail2ban /etc/fail2ban
+                            #cp -rf ${LIELLO_SOURCE_DIR}/misc/deb_files/fail2ban/jail.local /etc/fail2ban/jail.local
+
+                            sed -i -e "s/{INTF}/${INTF}/g" /etc/fail2ban/jail.local
+                            sed -i -e "s/{NOTISENDEREMAIL}/${NOTISENDEREMAIL}/g" /etc/fail2ban/jail.local
+                            sed -i -e "s/{NOTIEMAIL}/${NOTIEMAIL}/g" /etc/fail2ban/jail.local
+
+                        ################################# JAIL.CONF FILE READY ######################
+                        echo "################################################################"
+                        mkdir /var/run/fail2ban
+                        systemctl restart fail2ban
+                        systemctl enable fail2ban
+                        echo "################################################################"
+                        echo "Fail2Ban for FreeSwitch & IPtables Integration completed"
+                        else
+                        echo ""
+                        echo "Fail2ban installation is aborted !"
+                fi
+} #end install_fail2ban
 
 #Install Monit for service monitoring
 install_monit ()
