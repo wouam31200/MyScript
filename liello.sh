@@ -1,6 +1,6 @@
 #General Congifuration
 TEMP_USER_ANSWER="no"
-#LIELLO_SOURCE_DIR=/opt/liello
+LIELLO_SOURCE_DIR=/opt/liello
 HOST_DOMAIN_NAME="host.domain.tld"
 os_codename=$(lsb_release -cs)
 
