@@ -1,4 +1,3 @@
-#!/bin/bash
 #!/bin/sh
 now=$(date +%Y-%m-%d)
 ssh_server=1.2.3.4
