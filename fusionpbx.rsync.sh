@@ -21,13 +21,13 @@ fi
 # Lecture du mot de passe à partir du fichier
 ROOT_PASSWORD=$(cat $PASSWORD_FILE)
 
-#Exécuter la sauvegarde à distance
+# Exécuter la sauvegarde à distance
 ssh -p 22 root@$ssh_server "nice -n -20 /etc/cron.daily/./fusionpbx-backup" --password-file=<(echo $ROOT_PASSWORD)
 
-#Supprimer les journaux freeswitch de plus de 7 jours
+# Supprimer les journaux freeswitch de plus de 7 jours
 find /var/log/freeswitch/freeswitch.log.* -mtime +7 -exec rm {} \;
 
-#Synchroniser le répertoire de sauvegarde
+# Synchroniser le répertoire de sauvegarde
 #rsync -avz -e 'ssh -p 22' root@$ssh_server:/var/backups/fusionpbx /var/backups --password-file=<(echo $ROOT_PASSWORD)
 rsync -avz -e 'ssh -p 22' root@$ssh_server:/var/backups/fusionpbx/postgresql /var/backups/fusionpbx --password-file=<(echo $ROOT_PASSWORD)
 rsync -avz -e 'ssh -p 22' root@$ssh_server:/var/www/fusionpbx /var/www --password-file=<(echo $ROOT_PASSWORD)
@@ -41,16 +41,16 @@ rsync -avz -e 'ssh -p 22' root@$ssh_server:/usr/share/freeswitch/scripts /usr/sh
 rsync -avz -e 'ssh -p 22' root@$ssh_server:/usr/share/freeswitch/sounds /usr/share/freeswitch --password-file=<(echo $ROOT_PASSWORD)
 
 echo "Restauration de la sauvegarde"
-#extract the backup from the tgz file
+# Extraire la sauvegarde du fichier tgz
 #tar -xvpzf /var/backups/fusionpbx/backup_$now.tgz -C /
 
-#Supprimer l'ancienne base de données
+# Supprimer l'ancienne base de données
 psql --host=$database_host --port=$database_port  --username=fusionpbx -c 'drop schema public cascade;'
 psql --host=$database_host --port=$database_port  --username=fusionpbx -c 'create schema public;'
 
-#Restaurer la base de données
+# Restaurer la base de données
 pg_restore -v -Fc --host=$database_host --port=$database_port --dbname=fusionpbx --username=fusionpbx /var/backups/fusionpbx/postgresql/fusionpbx_pgsql_$now.sql
 
-#Redémarrer freeswitch
+# Redémarrer freeswitch
 service freeswitch restart
 echo "Restauration terminée";
