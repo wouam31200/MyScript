@@ -9,8 +9,13 @@ FREESWITCH_SERVICE=freeswitch
 # Vérifie si le serveur répond au ping
 if ping -c 1 $SERVER_IP > /dev/null
 then
-    # Le serveur répond au ping, on ne fait rien
-    exit 0
+    # Le serveur répond au ping
+    # Vérifie si le service FreeSWITCH est en cours d'exécution
+    if systemctl is-active --quiet $FREESWITCH_SERVICE
+    then
+        # Le service FreeSWITCH est en cours d'exécution, on l'arrête
+        systemctl stop $FREESWITCH_SERVICE
+    fi
 else
     # Le serveur ne répond pas au ping
     # Vérifie si le service FreeSWITCH est en cours d'exécution
