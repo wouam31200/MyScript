@@ -6,13 +6,13 @@ Pour utiliser ce script, vous devez remplacer l'adresse IP du serveur (1.2.3.4) 
 
 Pour exécuter ce script, vous pouvez utiliser la commande suivante :
 
-./mon_script.sh
+./start.service.fusionpbx.sh
 
 
 Assurez-vous de rendre le script exécutable avec la commande :
 
-chmod +x mon_script.sh
+chmod +x start.service.fusionpbx.sh
 
 Ajouter l'exécution à contrab:
 
-*/3 * * * * /chemin/vers/mon_script.sh
+*/3 * * * * /chemin/vers/start.service.fusionpbx.sh
